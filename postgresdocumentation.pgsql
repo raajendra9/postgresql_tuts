@@ -134,6 +134,8 @@ create view thisview as
 
 select * from myview;
 
+
+
 --foreign keys 
 -- create table employee (
 --     employee_id int primary key,

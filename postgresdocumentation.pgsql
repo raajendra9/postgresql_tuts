@@ -137,20 +137,3 @@ select * from myview;
 
 
 --foreign keys 
--- create table employee (
---     employee_id int primary key,
---     first_name varchar(255) not null,
---     last_name varchar(255) not null,
---     manager_id int,
---     foreign key (manager_id),
---     references employee (employee_id)
---     on delete cascade   
---     );
- 
--- insert into employee( 
---     employee_id,
---     first_name,
---     last_name,
---     manager_id
---     )
-

@@ -127,13 +127,61 @@ select *
 -- you need it, you can create a view over the query, which gives a name to the query that you can refer
 -- to like an ordinary table
 
-create view thisview as
-    select city, temp_lo, temo_hi, prcp, date, location
-        from weather, cities 
-        where city = name;
+-- create view thisview as
+--     select city, temp_lo, temo_hi, prcp, date, location
+--         from weather, cities 
+--         where city = name;
 
 select * from myview;
 
 
 
 --foreign keys 
+-- you want to make sure that no one can insert rows in the weather table that do not have matching entry
+-- in the cities table. this is called maintaining the referential intigrity of your data. in simplistic 
+-- database systems this would be implemented by first looking at cities table to check if a matching record exist
+-- and then inserting or rejecting the new weather records . this appraoch has number of problems and is very 
+-- in convinent, so PostgreSQL can do this for you 
+-- create table cities2(
+--     city        varchar(80) primary key,
+--     location    point
+-- );
+
+-- create table weather2(
+--     city        varchar(80) references cities2(city),
+--     temp_lo     int,
+--     temp_hi     int,
+--     prcp        real,
+--     date        date
+-- );
+-- insert into cities2 values('berkely', '(193, 46)');
+-- insert into weather2 values('berkely', 45, 53, 0.0, '1994-11-28'); 
+--  you will get an error like insert or update on weather table
+--  voilates foreign key constraint 
+
+-- transactions are fundamental concept of all database systems
+-- The essential point of transaction is that it bundles multiple
+-- steps into a single, all or nothing operation
+-- consider bank database that contains balances for various customer accounts
+-- as well as total deposit balances for branches
+
+-- there are several updates need to be made or nothing to made if one of that failed, if updates happen, or none of them happen
+-- in PostgreSQL transaction is setup by surrounding SQL commands of the transaction with BEGIN and COMMIT 
+-- commands so our bannking treansaction would be like this
+
+create table accounts(
+    name        varchar(80),
+    branchname  varchar(80) references branches(name), 
+    acno        int,
+    balance     real references branches(balance)
+);
+
+create table branches(
+    name varchar(80) primary key,
+    acno  int,
+    balance real primary key
+);
+
+insert into branches values('banglore', 112233, 1000.0);
+
+-- insert into accounts? values('alice', 'banglore', 112233, 1000.0);

@@ -231,3 +231,4 @@ select * from empsalary;
 select depname, empno, salary, avg(salary) 
 over (partition by depname)  
     from empsalary;
+-- commit

@@ -169,19 +169,65 @@ select * from myview;
 -- in PostgreSQL transaction is setup by surrounding SQL commands of the transaction with BEGIN and COMMIT 
 -- commands so our bannking treansaction would be like this
 
-create table accounts(
-    name        varchar(80),
-    branchname  varchar(80) references branches(name), 
-    acno        int,
-    balance     real references branches(balance)
-);
+-- create table branches1(
+-- branchname varchar(80) primary key,
+-- acno  int,
+-- balance real
+-- );
 
-create table branches(
-    name varchar(80) primary key,
-    acno  int,
-    balance real primary key
-);
+-- create table accounts1(
+-- name        varchar(80),
+-- branchname  varchar(80) references branches1(branchname), 
+-- acno        int,
+-- balance     real
+-- );
 
-insert into branches values('banglore', 112233, 1000.0);
 
--- insert into accounts? values('alice', 'banglore', 112233, 1000.0);
+
+-- insert into branches1 values('banglore', 112233, 1000.0);
+-- insert into branches1 values('hyderabad', 334455, 1000.0);
+-- insert into branches1 values('mumbai', 445566, 1000.0);
+
+-- insert into accounts1 values('bob', 'banglore', 112233, 1000.0);
+-- insert into accounts1 values('alice', 'hyderabad', 334455, 1000.0);
+-- insert into accounts1 values('wally', 'mumbai', 445566, 1000.0);
+
+BEGIN;
+update accounts1 set balance = balance - 100.0
+    where name = 'alice';
+savepoint mysavepoint;
+update accounts1 set balance = balance + 100.0
+    where name = 'bob';
+--oops  ... forget that and use wallys account 
+rollback to mysavepoint;
+update accounts1 set balance = balance + 100.0
+    where name = 'wally';
+commit;
+
+
+select distinct name, branchname, acno, balance
+    from accounts1;
+
+-- create table empsalary(
+--     depname varchar(80),
+--     empno int,
+--     salary int
+-- );
+
+insert into empsalary values('personnel', 11, 5200);
+insert into empsalary values('develop', 7, 4200);
+insert into empsalary values('develop', 9, 4500);
+insert into empsalary values('sales', 8, 6000);
+insert into empsalary values('sales', 10, 5200);
+insert into empsalary values('sales', 5, 3500);
+insert into empsalary values('personnel', 2, 3900);
+insert into empsalary values('personnel', 3, 4800);
+insert into empsalary values('develop', 1, 5000);
+insert into empsalary values('develop', 4, 4800);
+
+
+select * from empsalary;
+
+select depname, empno, salary, avg(salary) 
+over (partition by depname)  
+    from empsalary;

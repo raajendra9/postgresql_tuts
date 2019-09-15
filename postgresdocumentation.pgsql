@@ -5,7 +5,7 @@ select city, temp_lo
     from weather;
 
 --AS clause is used to relabel the output column
-select city, temp_lo+temo_hi/2 as temp_avg 
+select city, temp_lo+temp_hi/2 as temp_avg 
     from weather;
 
 --A query can be qulified by 'where' clause that specifies which rows are wanted
@@ -17,7 +17,7 @@ select *
 --you can request the results of query be returned in sorted order
 select * 
     from weather
-         order by city, temo_hi;
+         order by city, temp_hi;
 
 --you can request that duplicate rows be removed from the result of a query
 select distinct city 
@@ -36,7 +36,7 @@ select *
 --Since the columns  all had different names, the parser automatically 
 --found which table they belong to. if there were duplicate column names
 -- you need to qualify the names to show which one you meant, as in 
-select weather.city, weather.temp_lo, weather.temo_hi, weather.prcp, 
+select weather.city, weather.temp_lo, weather.temp_hi, weather.prcp, 
         weather.date, cities.location
         from cities, weather
             where weather.city = cities.name;
@@ -60,11 +60,11 @@ select * from weather left outer join cities on(weather.city = cities.name);
 -- self join is a query in which table joined to itself. self joins useful for comparing values in a
 -- column of rows with in the same table
 
-select w1.city, w1.temp_lo as low, w1.temo_hi as high,
-	w2.city, w2.temp_lo as low, w2.temo_hi as high
+select w1.city, w1.temp_lo as low, w1.temp_hi as high,
+	w2.city, w2.temp_lo as low, w2.temp_hi as high
 	from weather w1, weather w2
 	where w1.temp_lo < w2.temp_lo
-	and w1.temo_hi > w2.temo_hi;
+	and w1.temp_hi > w2.temp_hi;
 
 -- here we relabeled the weather table as w1 and w2 to be able to 
 -- distingush the left and right side of the join, you can also use these kinds of aliases
@@ -77,7 +77,7 @@ select * from weather w , cities c
 -- some are count, sum, avg, max and min
 select max(temp_lo) from weather;
 
---if wanted to know which city that reading occured
+--if wanted to know which city at reading occured
 select city from weather
     where temp_lo = (select max(temp_lo) from weather);
 
@@ -106,7 +106,7 @@ select city, max(temp_lo)
 
 --update the table columns
 update weather
-    set temo_hi = temo_hi-2, temp_lo = temp_lo-2
+    set temp_hi = temp_hi-2, temp_lo = temp_lo-2
     where date > '1994-11-28';
 
 select * from weather;
@@ -128,7 +128,7 @@ select *
 -- to like an ordinary table
 
 -- create view thisview as
---     select city, temp_lo, temo_hi, prcp, date, location
+--     select city, temp_lo, temp_hi, prcp, date, location
 --         from weather, cities 
 --         where city = name;
 
@@ -192,7 +192,7 @@ select * from myview;
 -- insert into accounts1 values('alice', 'hyderabad', 334455, 1000.0);
 -- insert into accounts1 values('wally', 'mumbai', 445566, 1000.0);
 
-BEGIN;
+begin;
 update accounts1 set balance = balance - 100.0
     where name = 'alice';
 savepoint mysavepoint;
@@ -231,5 +231,11 @@ select * from empsalary;
 select depname, empno, salary, avg(salary) 
 over (partition by depname)  
     from empsalary;
--- commit
+
+--rename column name in a table
+alter table weather rename column temp_hi to temp_hi;
+
+
+
+
 

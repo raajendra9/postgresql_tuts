@@ -236,6 +236,9 @@ over (partition by depname)
 alter table weather rename column temp_hi to temp_hi;
 
 
+-- check contraint is the most generic contraint type. it allows you to specify that the value in certain column must satisfy a boolean
+-- 
+
 
 
 

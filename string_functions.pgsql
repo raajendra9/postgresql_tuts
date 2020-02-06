@@ -1,0 +1,13 @@
+select 'post'||'gres';
+select length('hello');
+select char_length('world');
+select lower('STRING');
+select upper('string');
+select substr('hello', 2, 4);
+select position('th'in 'thanks');
+select position('an' in 'thanks');
+select ascii('x');
+select concat('avcdc', 2, NULL, 3); 
+select initcap('raj');
+select repeat('hello', 2);
+select reverse('olleh');

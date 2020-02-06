@@ -1,4 +1,4 @@
--- create table products1(
+ -- create table products1(
 --                         product_no int not null,
 --                         name text not null,
 --                         price numeric not null check(price>0)

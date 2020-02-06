@@ -1,0 +1,12 @@
+select count(*) from sal_emp;
+select max(age) from company;
+select min(age) from company;
+select avg(age) from company;
+select sum(sal) from company;
+select array_agg(name) from company;
+select json_agg(name) from company;
+select json_object_agg(name, age) from company;
+select stddev(age) from company;
+select variance(age) from company;
+select mode() within group(order by age) from company;
+select mode() within group(order by sal) from company; 

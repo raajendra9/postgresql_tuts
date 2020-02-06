@@ -1,0 +1,6 @@
+-- alter table company add gender char(1);
+-- select * from company;
+-- alter table company drop column gender;
+-- select * from company;
+-- alter table company add constraint pri primary key(id);
+-- alter table company drop constraint pri;
